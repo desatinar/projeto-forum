@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { create, getPosts } from "../controller/postsController.js";
+import { create, edit, getPosts } from "../controller/postsController.js";
 
 export const postRouter = Router();
 
@@ -7,3 +7,5 @@ export const postRouter = Router();
 postRouter.get("/", getPosts);
 //criar postagem
 postRouter.post("/create", create);
+//editar postagem
+postRouter.put("/edit/:id", edit)

@@ -71,3 +71,39 @@ export const create = async (req, res) => {
         res.send(error.message);
     }
 }
+
+export const edit = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const token = req.headers.authorization;
+        const { content, image, title } = req.body;
+
+        if(!token){
+            throw new Error("Token é necessário");
+        }
+
+        const [postExist] = await db("posts").where({id});
+        if(!postExist){
+            throw new Error("id da postagem não encontrado");
+        }
+
+        if(postExist.creator !== token){
+            throw new Error("Só quem criou a postagem pode editar a mesma. Verifique o token");
+        }
+
+        const newPost = {
+            id,
+            creator: token,
+            title: title || postExist.title,
+            content: content || postExist.content,
+            image: image || postExist.image 
+        };
+
+        await db("posts").update(newPost).where({id});
+
+        res.status(200).send("Post atualizado com sucesso!");
+
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
