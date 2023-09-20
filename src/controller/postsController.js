@@ -15,9 +15,12 @@ export const getPosts = async (req, res) => {
             throw new Error("Token inválido");
         }
 
-        const posts = await db("posts");
+        const posts = await db("posts as p")
+            .select("u.username as creator_name", "p.creator as creator_id", "p.id as post_id", "p.title as post_title",
+             "p.content as post_content", "p.created_at as post_created_at", "p.image as post_image")
+            .innerJoin("users as u", "u.id", "=", "p.creator");
+
         res.status(200).send(posts);
-        
     } catch (error) {
         res.send(error.message);
     }
@@ -25,11 +28,11 @@ export const getPosts = async (req, res) => {
 
 export const create = async (req, res) => {
     try {
-        const { title, content } = req.body;
+        const { title, content, image } = req.body;
         const token = req.headers.authorization;
-        if(!title || !content){
+        if(!title || !content || !image){
             res.statusCode = 400;
-            throw new Error("Necessário passar 'content'");
+            throw new Error("Necessário passar 'content', 'title' e 'image'");
         }
 
         if(typeof title !== "string"){
@@ -40,6 +43,11 @@ export const create = async (req, res) => {
         if(typeof content !== "string"){
             res.statusCode = 400;
             throw new Error("'content' precisa ser do tipo 'string'")
+        }
+
+        if(typeof image !== "string"){
+            res.statusCode = 400;
+            throw new Error("'image' precisa ser do tipo 'string'")
         }
 
         if(!token){
@@ -56,7 +64,7 @@ export const create = async (req, res) => {
 
         const id = v4();
 
-        await db("posts").insert({id, creator: token, title, content});
+        await db("posts").insert({id, creator: token, title, content, image});
 
         res.status(201).send("Postagem criada com sucesso");
     } catch (error) {

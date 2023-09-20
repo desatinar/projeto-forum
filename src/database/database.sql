@@ -12,7 +12,13 @@ CREATE TABLE posts(
     title TEXT NOT NULL,
     content TEXT NOT NULL,
     created_at DEFAULT(DATE('now', 'localtime')),
+    image TEXT NOT NULL,
     FOREIGN KEY (creator) REFERENCES users(id)
 );
 
 drop table posts;
+
+select u.username, p.id, p.creator, p.title, p.content, p.created_at
+from posts as p
+inner join users as u
+where p.creator = u.id;
