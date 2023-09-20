@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { create, edit, getPosts } from "../controller/postsController.js";
+import { create, deletePost, edit, getPosts } from "../controller/postsController.js";
 
 export const postRouter = Router();
 
@@ -8,4 +8,6 @@ postRouter.get("/", getPosts);
 //criar postagem
 postRouter.post("/create", create);
 //editar postagem
-postRouter.put("/edit/:id", edit)
+postRouter.put("/edit/:id", edit);
+//deletar postagem
+postRouter.delete("/delete/:id", deletePost);

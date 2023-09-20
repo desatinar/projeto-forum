@@ -107,3 +107,31 @@ export const edit = async (req, res) => {
         res.status(400).send(error.message);
     }
 }
+
+export const deletePost = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const token = req.headers.authorization;
+
+        if(!token){
+            throw new Error("É necessário passar um token");
+        }
+
+        const [postExist] = await db("posts").where({id});
+
+        if(!postExist){
+            throw new Error("id da postagem não encontrado")
+        }
+
+        if(postExist.creator !== token){
+            throw new Error("Só quem criou a postagem apagar a mesma");
+        }
+
+        await db("posts").del().where({id});
+
+        res.send("Postagem deletada com sucesso");
+        
+    } catch (error) {
+        res.status(400).send(error.message)
+    }
+}

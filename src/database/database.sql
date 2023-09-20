@@ -11,7 +11,7 @@ CREATE TABLE posts(
     creator TEXT NOT NULL,
     title TEXT NOT NULL,
     content TEXT NOT NULL,
-    created_at DEFAULT(DATE('now', 'localtime')),
+    created_at DEFAULT(DATETIME('now', 'localtime')),
     image TEXT NOT NULL,
     FOREIGN KEY (creator) REFERENCES users(id)
 );
