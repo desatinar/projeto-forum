@@ -135,3 +135,24 @@ export const deletePost = async (req, res) => {
         res.status(400).send(error.message)
     }
 }
+
+export const getPostById = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const [postExist] = await db("posts").where({id});
+
+        if(!postExist){
+            throw new Error("id da postagem inválido");
+        }
+
+        const [post] = await db("posts as p")
+            .select("u.username as creator_name", "p.creator as creator_id", "p.id as post_id", "p.title as post_title",
+             "p.content as post_content", "p.created_at as post_created_at", "p.image as post_image")
+            .innerJoin("users as u", "u.id", "=", "p.creator")
+            .where("p.id", "=", `${id}`);
+        res.status(200).send(post);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
