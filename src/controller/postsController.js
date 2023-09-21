@@ -4,20 +4,20 @@ import { v4 } from "uuid";
 export const getPosts = async (req, res) => {
     try {
         const token = req.headers.authorization;
-        if (!token){
+        if (!token) {
             res.statusCode = 400;
             throw new Error("Necessário informar o token");
         }
 
-        const [tokenExist] = await db("users").where({id: token});
-        if (!tokenExist){
+        const [tokenExist] = await db("users").where({ id: token });
+        if (!tokenExist) {
             res.statusCode = 400;
             throw new Error("Token inválido");
         }
 
         const posts = await db("posts as p")
             .select("u.username as creator_name", "p.creator as creator_id", "p.id as post_id", "p.title as post_title",
-             "p.content as post_content", "p.created_at as post_created_at", "p.image as post_image")
+                "p.content as post_content", "p.created_at as post_created_at", "p.image as post_image")
             .innerJoin("users as u", "u.id", "=", "p.creator");
 
         res.status(200).send(posts);
@@ -30,41 +30,41 @@ export const create = async (req, res) => {
     try {
         const { title, content, image } = req.body;
         const token = req.headers.authorization;
-        if(!title || !content || !image){
+        if (!title || !content || !image) {
             res.statusCode = 400;
             throw new Error("Necessário passar 'content', 'title' e 'image'");
         }
 
-        if(typeof title !== "string"){
+        if (typeof title !== "string") {
             res.statusCode = 400;
             throw new Error("'title' precisa ser do tipo 'string'");
         }
 
-        if(typeof content !== "string"){
+        if (typeof content !== "string") {
             res.statusCode = 400;
             throw new Error("'content' precisa ser do tipo 'string'")
         }
 
-        if(typeof image !== "string"){
+        if (typeof image !== "string") {
             res.statusCode = 400;
             throw new Error("'image' precisa ser do tipo 'string'")
         }
 
-        if(!token){
+        if (!token) {
             res.statusCode = 400;
             throw new Error("Informar o 'token'");
         }
 
-        const [creatorExist] = await db("users").where({id: token});
+        const [creatorExist] = await db("users").where({ id: token });
 
-        if(!creatorExist){
+        if (!creatorExist) {
             res.statusCode = 400;
             throw new Error("ID do usuário não encontrado");
         }
 
         const id = v4();
 
-        await db("posts").insert({id, creator: token, title, content, image});
+        await db("posts").insert({ id, creator: token, title, content, image });
 
         res.status(201).send("Postagem criada com sucesso");
     } catch (error) {
@@ -78,16 +78,16 @@ export const edit = async (req, res) => {
         const token = req.headers.authorization;
         const { content, image, title } = req.body;
 
-        if(!token){
+        if (!token) {
             throw new Error("Token é necessário");
         }
 
-        const [postExist] = await db("posts").where({id});
-        if(!postExist){
+        const [postExist] = await db("posts").where({ id });
+        if (!postExist) {
             throw new Error("id da postagem não encontrado");
         }
 
-        if(postExist.creator !== token){
+        if (postExist.creator !== token) {
             throw new Error("Só quem criou a postagem pode editar a mesma. Verifique o token");
         }
 
@@ -96,10 +96,10 @@ export const edit = async (req, res) => {
             creator: token,
             title: title || postExist.title,
             content: content || postExist.content,
-            image: image || postExist.image 
+            image: image || postExist.image
         };
 
-        await db("posts").update(newPost).where({id});
+        await db("posts").update(newPost).where({ id });
 
         res.status(200).send("Post atualizado com sucesso!");
 
@@ -113,24 +113,24 @@ export const deletePost = async (req, res) => {
         const { id } = req.params;
         const token = req.headers.authorization;
 
-        if(!token){
+        if (!token) {
             throw new Error("É necessário passar um token");
         }
 
-        const [postExist] = await db("posts").where({id});
+        const [postExist] = await db("posts").where({ id });
 
-        if(!postExist){
+        if (!postExist) {
             throw new Error("id da postagem não encontrado")
         }
 
-        if(postExist.creator !== token){
+        if (postExist.creator !== token) {
             throw new Error("Só quem criou a postagem apagar a mesma");
         }
 
-        await db("posts").del().where({id});
+        await db("posts").del().where({ id });
 
         res.send("Postagem deletada com sucesso");
-        
+
     } catch (error) {
         res.status(400).send(error.message)
     }
@@ -140,18 +140,24 @@ export const getPostById = async (req, res) => {
     try {
         const { id } = req.params;
 
-        const [postExist] = await db("posts").where({id});
+        const [postExist] = await db("posts").where({ id });
 
-        if(!postExist){
+        if (!postExist) {
             throw new Error("id da postagem inválido");
         }
 
         const [post] = await db("posts as p")
             .select("u.username as creator_name", "p.creator as creator_id", "p.id as post_id", "p.title as post_title",
-             "p.content as post_content", "p.created_at as post_created_at", "p.image as post_image")
+                "p.content as post_content", "p.created_at as post_created_at", "p.image as post_image")
             .innerJoin("users as u", "u.id", "=", "p.creator")
             .where("p.id", "=", `${id}`);
-        res.status(200).send(post);
+
+        const comments = await db("comments as c")
+            .select("c.creator_id as creator_id", "u.username as creator_name", "c.comment as comment", "c.created_at")
+            .innerJoin("users as u", "u.id", "=", "c.creator_id");
+
+        const response = {...post, comments}
+        res.status(200).send(response);
     } catch (error) {
         res.status(400).send(error.message);
     }
