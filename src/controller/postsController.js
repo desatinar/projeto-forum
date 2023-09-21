@@ -162,3 +162,16 @@ export const getPostById = async (req, res) => {
         res.status(400).send(error.message);
     }
 }
+
+export const getAllPosts = async (req, res) => {
+    try {
+        const posts = await db("posts as p")
+            .select("u.username as creator_name", "p.creator as creator_id", "p.id as post_id", "p.title as post_title",
+                "p.content as post_content", "p.created_at as post_created_at", "p.image as post_image")
+            .innerJoin("users as u", "u.id", "=", "p.creator");
+
+        res.status(200).send(posts);
+    } catch (error) {
+        res.send(error.message);
+    }
+}

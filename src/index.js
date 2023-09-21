@@ -17,4 +17,4 @@ app.use("/user", userRouter);
 //rota de postagens
 app.use("/post", postRouter);
 //rota de comentários
-app.use("/comments", commentRouter);
+app.use("/comment", commentRouter);
