@@ -153,7 +153,7 @@ export const getPostById = async (req, res) => {
             .where("p.id", "=", `${id}`);
 
         const comments = await db("comments as c")
-            .select("c.creator_id as creator_id", "u.username as creator_name", "c.comment as comment", "c.created_at")
+            .select("c.id as comment_id", "c.creator_id as creator_id", "u.username as creator_name", "c.comment as comment", "c.created_at")
             .innerJoin("users as u", "u.id", "=", "c.creator_id");
 
         const response = {...post, comments}
