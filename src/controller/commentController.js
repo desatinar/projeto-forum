@@ -59,3 +59,30 @@ export const edit = async (req, res) => {
         res.status(400).send(error.message)
     }
 }
+
+export const deleteComment = async (req, res) => {
+    try {
+        const token = req.headers.authorization;
+        const { id } = req.params;
+
+        if(!token){
+            throw new Error("É necessário passar o 'token'");
+        }
+
+        const [commentExist] = await db("comments").where({id});
+
+        if(!commentExist){
+            throw new Error("Comentário não encontrado. Verifique o 'id'");
+        }
+
+        if(commentExist.creator_id !== token){
+            throw new Error("Só o criador do comentário pode deletar o mesmo");
+        }
+
+        await db("comments").del().where({id});
+
+        res.status(200).send("Comentário deletado com sucesso!");
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}

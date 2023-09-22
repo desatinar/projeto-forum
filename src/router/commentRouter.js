@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { create, edit } from "../controller/commentController.js";
+import { create, deleteComment, edit } from "../controller/commentController.js";
 
 export const commentRouter = Router();
 
@@ -7,3 +7,5 @@ export const commentRouter = Router();
 commentRouter.post("/create", create);
 //editar comentário na postagem
 commentRouter.put("/edit/:id", edit);
+//deletar comentário da postagem
+commentRouter.delete("/delete/:id", deleteComment);
