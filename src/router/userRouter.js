@@ -7,3 +7,5 @@ export const userRouter = Router();
 userRouter.post("/signup", signup);
 //login
 userRouter.post("/login", login);
+//editar imagem do usuário
+userRouter.put("/edit/:id", edit)
