@@ -3,5 +3,7 @@ import { login, signup } from "../controller/userController.js";
 
 export const userRouter = Router();
 
+//criar usuário
 userRouter.post("/signup", signup);
-userRouter.post("/login", login)
+//login
+userRouter.post("/login", login);
