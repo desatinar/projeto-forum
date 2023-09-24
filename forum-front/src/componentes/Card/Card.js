@@ -3,12 +3,9 @@ import axios from 'axios';
 import { ButtonCard, CardStyle, ContainerCard, ContainerPost, ContainerTag, ConteudoCard, EditPost, ImgCard, MensagemCard, NomeCard, TituloCard } from './style';
 import { useNavigate } from 'react-router-dom';
 
-function Card({postFeed, setPostFeed}) {
- 
-  const navigate = useNavigate()
-  // const [news, setNews] = useState([])
+function Card({ postFeed, setPostFeed }) {
 
- 
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -20,8 +17,9 @@ function Card({postFeed, setPostFeed}) {
       return;
     }
 
-    axios.get('http://localhost:3003/post',{
-      headers: {'Authorization': token }})
+    axios.get('http://localhost:3003/post', {
+      headers: { 'Authorization': token }
+    })
       .then(response => {
         console.log(response.data)
         setPostFeed(response.data)
@@ -29,41 +27,49 @@ function Card({postFeed, setPostFeed}) {
       .catch(error => console.error(error));
   }, []);
 
-  const novoPost = postFeed && postFeed.map(item => (
-    <CardStyle key={item.id}>
+  const formatarDataBrasileira = (dataString) => {
+    const [ano, mes, dia] = dataString.split('-');
+    return `${dia}/${mes}/${ano}`;
+}
 
-      {/* <ImgCard src={item.url_img} alt='' /> */}
-      {/* <NomeCard>{item.creator_name}</NomeCard> */}
-      <NomeCard>Nome</NomeCard>
-      <MensagemCard>{item.created_at}</MensagemCard>
+  const novoPost = postFeed && postFeed.map(dado => (
     
-      {/* <ButtonCard onClick={()=>navigate('/editar')}>Editar</ButtonCard> */}
+    <CardStyle key={dado.id}>
+      <ImgCard 
+      src='https://github.com/PaulaRabelo.png' 
+      alt='foto de perfil' 
+      />
 
-      <TituloCard>{item.title}</TituloCard>
-       <ConteudoCard>{item.content}</ConteudoCard>
-       <img src={item.post_image}/>
+      <NomeCard>
+        Paula Rabelo de Oliveira
+      </NomeCard>
 
-  
-
+      <MensagemCard>
+        {formatarDataBrasileira(dado.created_at)}
+      </MensagemCard>
+      
+      <TituloCard>{dado.title}</TituloCard>
+      <ConteudoCard>{dado.content}</ConteudoCard>
+      <img src={dado.post_image} />
       <EditPost>
-       <button>
-         Comentar
-       </button>
-       <button>
-        Curti
-       </button>
+        <button>
+          Comentar
+        </button>
+        <button>
+          Curti
+        </button>
       </EditPost>
 
-    </CardStyle>
-  
-      ))
+    </CardStyle>)
+
+  )
   return (
     <>
 
       <ContainerCard>
 
         {novoPost}
-       
+        
 
       </ContainerCard>
 
