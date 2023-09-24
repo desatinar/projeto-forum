@@ -1,10 +1,13 @@
--- Active: 1695234467841@@127.0.0.1@3306
+-- Active: 1695580083623@@127.0.0.1@3306
 CREATE TABLE users(
     id TEXT UNIQUE NOT NULL PRIMARY KEY,
     username TEXT UNIQUE NOT NULL,
     email TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL
+    password TEXT NOT NULL,
+    image TEXT DEFAULT('https://images.pexels.com/photos/4966168/pexels-photo-4966168.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1')
 );
+
+drop table users;
 
 CREATE TABLE posts(
     id TEXT UNIQUE NOT NULL PRIMARY KEY,
@@ -13,6 +16,7 @@ CREATE TABLE posts(
     content TEXT NOT NULL,
     created_at DEFAULT(DATETIME('now', 'localtime')),
     image TEXT NOT NULL,
+    hashtag TEXT NOT NULL,
     FOREIGN KEY (creator) REFERENCES users(id)
 );
 

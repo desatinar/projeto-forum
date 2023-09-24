@@ -28,11 +28,11 @@ export const getPosts = async (req, res) => {
 
 export const create = async (req, res) => {
     try {
-        const { title, content, image } = req.body;
+        const { title, content, image, hashtag } = req.body;
         const token = req.headers.authorization;
-        if (!title || !content || !image) {
+        if (!title || !content || !image || !hashtag) {
             res.statusCode = 400;
-            throw new Error("Necessário passar 'content', 'title' e 'image'");
+            throw new Error("Necessário passar 'content', 'title', 'image', 'hashtag'");
         }
 
         if (typeof title !== "string") {
@@ -64,7 +64,7 @@ export const create = async (req, res) => {
 
         const id = v4();
 
-        await db("posts").insert({ id, creator: token, title, content, image });
+        await db("posts").insert({ id, creator: token, title, content, image, hashtag });
 
         res.status(201).send("Postagem criada com sucesso");
     } catch (error) {
@@ -76,7 +76,7 @@ export const edit = async (req, res) => {
     try {
         const { id } = req.params;
         const token = req.headers.authorization;
-        const { content, image, title } = req.body;
+        const { content, image, title, hashtag } = req.body;
 
         if (!token) {
             throw new Error("Token é necessário");
@@ -96,7 +96,8 @@ export const edit = async (req, res) => {
             creator: token,
             title: title || postExist.title,
             content: content || postExist.content,
-            image: image || postExist.image
+            image: image || postExist.image,
+            hashtag: hashtag || postExist.hashtag
         };
 
         await db("posts").update(newPost).where({ id });
@@ -148,7 +149,7 @@ export const getPostById = async (req, res) => {
 
         const [post] = await db("posts as p")
             .select("u.username as creator_name", "p.creator as creator_id", "p.id as post_id", "p.title as post_title",
-                "p.content as post_content", "p.created_at as post_created_at", "p.image as post_image")
+                "p.content as post_content", "p.created_at as post_created_at", "p.image as post_image", "p.hashtag as posts_hashtags")
             .innerJoin("users as u", "u.id", "=", "p.creator")
             .where("p.id", "=", `${id}`);
 
@@ -167,11 +168,29 @@ export const getAllPosts = async (req, res) => {
     try {
         const posts = await db("posts as p")
             .select("u.username as creator_name", "p.creator as creator_id", "p.id as post_id", "p.title as post_title",
-                "p.content as post_content", "p.created_at as post_created_at", "p.image as post_image")
+                "p.content as post_content", "p.created_at as post_created_at", "p.image as post_image", "p.hashtag as posts_hashtags")
             .innerJoin("users as u", "u.id", "=", "p.creator");
 
         res.status(200).send(posts);
     } catch (error) {
         res.send(error.message);
+    }
+}
+
+export const getPostsByUserId = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const userExist = await db("users").where({id});
+
+        if(!userExist){
+            throw new Error("Id do usuário inválida");
+        }
+
+        const response = await db("posts").where({creator_id: id});
+
+        res.status(200).send(response);
+    } catch (error) {
+        res.status(400).send(error.message);
     }
 }

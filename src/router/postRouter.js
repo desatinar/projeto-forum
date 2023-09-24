@@ -9,6 +9,8 @@ postRouter.get("/", getPosts);
 postRouter.get("/all", getAllPosts);
 //pegar postagem pelo id
 postRouter.get("/:id", getPostById);
+//pegar todas as postagens de um usuário
+postRouter.get("/user/:id", getPostsByUserId)
 //criar postagem
 postRouter.post("/create", create);
 //editar postagem
