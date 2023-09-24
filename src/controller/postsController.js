@@ -180,15 +180,13 @@ export const getAllPosts = async (req, res) => {
 export const getPostsByUserId = async (req, res) => {
     try {
         const { id } = req.params;
-
         const userExist = await db("users").where({id});
 
         if(!userExist){
             throw new Error("Id do usuário inválida");
         }
-
+        
         const response = await db("posts").where({creator_id: id});
-
         res.status(200).send(response);
     } catch (error) {
         res.status(400).send(error.message);
