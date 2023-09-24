@@ -4,6 +4,7 @@ import Create from "../pages/Create/Create"
 import Home from "../pages/Home/Home"
 import CriarPost from "../pages/CriarPost/CriarPost"
 import EditarPerfil from "../pages/EditarPerfil/EditarPerfil"
+import Comentar from "../componentes/Comentar/Comentar"
 
 
 
@@ -22,6 +23,7 @@ function Rotas(props) {
                 <Route path="cadastrar" element={<Create/>}/>
                 <Route path="criarPost" element={<CriarPost/>} />
                 <Route path="editarPefil" element={<EditarPerfil/>}/>
+                <Route path="comentar" element={<Comentar/>}/>
             </Routes>
         </BrowserRouter>
     )

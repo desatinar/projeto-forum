@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Rotas from "./Rotas/Rotas";
 import { GlobalStyle } from "./Globalstyle";
+import GetAllPosts from "./pages/GetAllPosts/GetAllPosts";
 
 
 
@@ -16,7 +17,8 @@ function App(){
   return(
     <>
     <GlobalStyle/>
-      <Rotas 
+    <GetAllPosts/>
+      {/* <Rotas 
       postFeed={postFeed}
       setPostFeed={setPostFeed}
       posts={posts}
@@ -29,7 +31,7 @@ function App(){
       setContent={setContent}
       tags={tags}
       setTags={setTags}
-      />
+      /> */}
     </>
   )
 }
