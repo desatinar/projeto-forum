@@ -1,0 +1,53 @@
+import { useEffect, useState } from 'react';
+import logo from '../../assets/Logo.png'
+import { ButtonAsk, ButtonLista, ContainerButton, HeaderStyle, ImagemSeta, ImgIcone, ImgPerfil, PrimeiroButton, Select, Trocar } from './style'
+import { useNavigate } from "react-router-dom";
+import icone from "../../assets/notification.png"
+import seta from "../../assets/caret.png"
+
+function HeaderPerfil(props) {
+
+    const [showMenu, setShowMenu] = useState(false);
+    const navigate = useNavigate()
+
+    const handleLogout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('email'); // Você pode remover outras informações do usuário se necessário
+        navigate('/'); // Redirecionar para a página de login após o logout
+    }
+
+
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            navigate('/'); // Redirecionar para a página de login se não houver token
+        }
+    }, [navigate]);
+
+
+    return (
+        <HeaderStyle>
+            <img src={logo} alt='logo alem help' />
+            <p>{props.titulo}</p>
+            <ContainerButton>
+                <ButtonAsk onClick={() => navigate('/criarPost')}>Ask a questions</ButtonAsk>
+                <ImgIcone src={icone} />
+                <ImgPerfil src='https://github.com/PaulaRabelo.png' />
+
+                <Trocar>
+                    <PrimeiroButton onClick={() => setShowMenu(!showMenu)}> <img src={seta} /> </PrimeiroButton>
+
+                    {showMenu && (
+                        <>
+                            <ButtonLista onClick={handleLogout}>Logout</ButtonLista>
+                            <ButtonLista onClick={() => { navigate('/editarPerfil') }}>Editar</ButtonLista>
+                        </>
+                    )}
+                </Trocar>
+            </ContainerButton>
+        </HeaderStyle>
+    )
+}
+
+export default HeaderPerfil

@@ -25,6 +25,12 @@ export const signup = async (req, res) => {
             throw new Error("Informe um 'email' válido");
         }
 
+        const [userEmailExist] = await db("users").where({email});
+
+        if(userEmailExist){
+            throw new Error("E-mail já em uso. Utilize outro");
+        }
+
         const id = v4();
         await db("users").insert({id, email, username, password});
 
@@ -55,5 +61,28 @@ export const login = async (req, res) => {
         
     } catch (error) {
         res.send(error.message);
+    }
+}
+
+export const edit = async (req, res) => {
+    try {
+        const { image } = req.body;
+        const { id } = req.params;
+
+        if(!image){
+            throw new Error("É necessário passar 'image' via body");
+        }
+
+        const [userExist] = await db("users").where({id});
+
+        if(!userExist){
+            throw new Error("Usuário não encontrado");
+        }
+
+        await db("users").update({image}).where({id});
+
+        res.status(200).send("Imagem alterada com sucesso!");
+    } catch (error) {
+        res.status(400).send(error.message);
     }
 }

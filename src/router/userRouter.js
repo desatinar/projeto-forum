@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, signup } from "../controller/userController.js";
+import { edit, login, signup } from "../controller/userController.js";
 
 export const userRouter = Router();
 
@@ -7,3 +7,5 @@ export const userRouter = Router();
 userRouter.post("/signup", signup);
 //login
 userRouter.post("/login", login);
+//editar imagem do usuário
+userRouter.put("/edit/:id", edit)

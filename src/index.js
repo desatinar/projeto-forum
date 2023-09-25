@@ -3,6 +3,7 @@ import cors from "cors";
 import { userRouter } from "./router/userRouter.js";
 import { postRouter } from "./router/postRouter.js";
 import { commentRouter } from "./router/commentRouter.js";
+import { likeRouter } from "./router/likeRouter.js";
 
 const app = express();
 app.use(express.json());
@@ -18,3 +19,5 @@ app.use("/user", userRouter);
 app.use("/post", postRouter);
 //rota de comentários
 app.use("/comment", commentRouter);
+//rota de curtidas
+app.use("/likes", likeRouter)
