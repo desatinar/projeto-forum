@@ -40,6 +40,16 @@ VALUES
  '7e12cb7d-5dd5-45ec-bf30-da3466282d9f',
  'Testando os comentários2');
 
+CREATE TABLE likes(
+    post TEXT NOT NULL,
+    user TEXT NOT NULL,
+    like INTEGER NOT NULL,
+    FOREIGN KEY (post) REFERENCES posts(id),
+    FOREIGN KEY (user) REFERENCES users(id)
+);
+
+drop table likes;
+
 select u.username, p.id, p.creator, p.title, p.content, p.created_at
 from posts as p
 inner join users as u

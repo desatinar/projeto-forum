@@ -26,7 +26,7 @@ export const create = async (req, res) => {
 
         await db("comments").insert({id, creator_id: token, post_id: postId, comment});
 
-        res.status(201).send("Comentário criado com sucesso")
+        res.status(201).send("Comentário criado com sucesso");
     } catch (error) {
         res.status(400).send(error.message);
     }
@@ -56,7 +56,7 @@ export const edit = async (req, res) => {
 
         res.status(200).send("Comentário editado com sucesso!");
     } catch (error) {
-        res.status(400).send(error.message)
+        res.status(400).send(error.message);
     }
 }
 

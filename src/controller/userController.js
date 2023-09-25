@@ -67,7 +67,7 @@ export const login = async (req, res) => {
 export const edit = async (req, res) => {
     try {
         const { image } = req.body;
-        const { id } = req.params.id;
+        const { id } = req.params;
 
         if(!image){
             throw new Error("É necessário passar 'image' via body");
