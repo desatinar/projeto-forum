@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { create, deleteComment, edit } from "../controller/commentController.js";
+import { create, deleteComment, edit, getCommentsByPostId } from "../controller/commentController.js";
 
 export const commentRouter = Router();
 
@@ -9,3 +9,5 @@ commentRouter.post("/create", create);
 commentRouter.put("/edit/:id", edit);
 //deletar comentário da postagem
 commentRouter.delete("/delete/:id", deleteComment);
+// Obter comentários por ID da postagem
+commentRouter.get("/post/:postId", getCommentsByPostId);

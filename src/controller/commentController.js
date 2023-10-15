@@ -32,6 +32,23 @@ export const create = async (req, res) => {
     }
 }
 
+export const getCommentsByPostId = async (req, res) => {
+    try {
+        const postId = req.params.postId;
+
+        if (!postId) {
+            throw new Error("É necessário fornecer um 'postId' válido");
+        }
+
+        // Busque os comentários relacionados a uma postagem específica
+        const comments = await db("comments").where({ post_id: postId });
+
+        res.status(200).json(comments);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 export const edit = async (req, res) => {
     try {
         const token = req.headers.authorization;
