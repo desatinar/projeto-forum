@@ -6,7 +6,7 @@ dotenv.config();
 export const db = knex({
     client: "sqlite3",
     connection: {
-        filename: "./database/database.db", //localização do seu arquivo .db
+        filename: "../../database.db", //localização do seu arquivo .db
     },
     useNullAsDefault: true, // definirá NULL quando encontrar valores undefined
     pool: {
