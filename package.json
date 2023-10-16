@@ -5,8 +5,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "build": "npm install && npm rum build",
-    "start": "npm run start",
+    "start": "node ./build/index.js",
+    "build": "tsc",
     "dev": "nodemon ./src/index.js"
   },
   "keywords": [],
