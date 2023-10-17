@@ -52,5 +52,5 @@ drop table likes;
 
 select u.username, p.id, p.creator, p.title, p.content, p.created_at
 from posts as p
-inner join users as u
+inner join users as u 
 where p.creator = u.id;

@@ -9,30 +9,38 @@ function Card() {
   const novoArray = useRequestData('http://localhost:3003/post')
 
   const formatarDataBrasileira = (dataString) => {
+    if (typeof dataString !== 'string') {
+        console.error('formatarDataBrasileira received a non-string value:', dataString);
+        return "";
+    }
     const [ano, mes, dia] = dataString.split('-');
     return `${dia}/${mes}/${ano}`;
-  }
+}
+
 
 
 
   const novoPost = novoArray && novoArray.map(dado => (
 
-    <CardStyle key={dado.id}>
+    <CardStyle key={dado.creator_id}>
       <ImgCard
-        src='https://github.com/PaulaRabelo.png'
+        src={dado.post_image}
         alt='foto de perfil'
       />
 
       <NomeCard>
-        Paula Rabelo de Oliveira
+        {dado.creator_name}
       </NomeCard>
 
       <MensagemCard>
-        {formatarDataBrasileira(dado.created_at)}
+      {/* {formatarDataBrasileira(dado.post_created_at)} */}
+
+        {/* {dado.post_created_at}  */}
+      
       </MensagemCard>
 
-      <TituloCard>{dado.title}</TituloCard>
-      <ConteudoCard>{dado.content}</ConteudoCard>
+      <TituloCard>{dado.post_title}</TituloCard>
+      <ConteudoCard>{dado.post_content}</ConteudoCard>
       <img src={dado.post_image} />
       <EditPost>
         <button>
@@ -44,6 +52,7 @@ function Card() {
       </EditPost>
 
     </CardStyle>)
+ 
 
   )
   return (
@@ -52,7 +61,6 @@ function Card() {
       <ContainerCard>
 
         {novoPost}
-
 
       </ContainerCard>
 
