@@ -12,7 +12,7 @@ const EditarPost = () =>{
           return;
         }
 
-        axios.put(`http://localhost:3003/post/edit/${id}`, {
+        axios.put(`https://forum-backend-3zv0.onrender.com/post/edit/${id}`, {
             headers: {'Authorization': token}
         })
         .then(response =>{

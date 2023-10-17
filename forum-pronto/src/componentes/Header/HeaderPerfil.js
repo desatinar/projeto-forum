@@ -13,7 +13,7 @@ function HeaderPerfil(props) {
     const handleLogout = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('email'); // Você pode remover outras informações do usuário se necessário
-        navigate('/'); // Redirecionar para a página de login após o logout
+        navigate('/login'); // Redirecionar para a página de login após o logout
     }
 
 
@@ -21,7 +21,7 @@ function HeaderPerfil(props) {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (!token) {
-            navigate('/'); // Redirecionar para a página de login se não houver token
+            navigate('/login'); // Redirecionar para a página de login se não houver token
         }
     }, [navigate]);
 

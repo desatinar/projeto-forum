@@ -10,6 +10,7 @@ export const useUserOperations = (initialForm,path) => {
     const [message, setMessage] = useState('');
     const [form, onChangeForm] = useForm(initialForm);
 
+    console.log(form)
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {

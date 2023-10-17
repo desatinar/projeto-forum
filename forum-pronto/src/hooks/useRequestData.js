@@ -1,30 +1,39 @@
 import axios from 'axios'
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { BASE_URL } from '../constants/url';
+import { useNavigate } from 'react-router-dom';
 
-export const useRequestData = (url)=>{
+export const useRequestData = (path)=>{
 
-    const [data, setData] = useState([])
+  const [dados, setDados] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(false)
 
-    useEffect(() => {
+  const navigate = useNavigate()
+console.log(dados)
 
-        const token = localStorage.getItem('token'); // Recupere o token do local storage
-    
-        if (!token) {
-          console.error("Token not found");
-          return;
-        }
-    
-        axios
-        .get(url, {
-          headers: { 'Authorization': token }
-        })
-          .then(response => {
-            setData(response.data)
-          })
-          .catch(error => console.error(error));
-      }, []);
+  useEffect(() => {
+      setIsLoading(true)
+      const token = localStorage.getItem('token'); // Recupere o token do local storage
+  
+      if (token) {
+        navigate('/home');
+      }
+  
+      axios
+      .get(`${BASE_URL}${path}`, {
+        headers: { 'Authorization': token }})
+      .then(response => {
+        setDados(response.data);
+        // console.log('aqui',response.data)
+        setIsLoading(false)
+      })
+      // .catch(error => console.error(error));
+      .catch((err) => setError(err.response.data.message || true));
+    }, [navigate]);
 
-      return data
+    console.log("dados",dados)
+
+    return [dados, isLoading, error]
 
 }

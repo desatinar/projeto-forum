@@ -1,40 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import axios from 'axios';
 import cadastroImagem from '../../assets/img-create.png'
 import { ButtonStyle, ContainerDiv, FormStyle, ImagemStyle, InputStyle, PStyle, SectionStyle } from './style';
 import Header from '../../componentes/Header/Header';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from '../../hooks/useForm';
+import { useUserOperations } from '../../hooks/useUserOperations';
+// import useUserOperations from '../../hooks/useUserOperations';
 
 function Create() {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
+    
+    // const [message, setMessage] = useState('');
 
     const navigate = useNavigate()
    
+    // const [form, onChangeForm] = useForm({nome:'', password:'', email:''})
+    const {form, onChangeForm, handleSubmit} = useUserOperations({username:'', password:'', email:''},'user/signup');
+    
+    console.log(form)
 
-    const postCadastroUsuario = (e) => {
-        e.preventDefault();
-
-        const body = {  
-            email:email, 
-            username:username,
-            password:password};
-
-        axios.post('http://localhost:3003/user/signup', body)
-            .then(response => {
-                if (response.data.token) {
-                    localStorage.setItem('token', response.data.token);
-                }
-                setMessage(response.data.message)
-                setUsername('');
-                setEmail('');
-                setPassword('');
-                navigate('/home')
-            })
-            .catch(error => console.error(error));
-    };
 
     return (
         <>
@@ -46,26 +30,29 @@ function Create() {
                     <h2>Join Alem community</h2>
                     <PStyle>Get more features and priviliges by joining to the most helpful community</PStyle>
 
-                    <FormStyle onSubmit={postCadastroUsuario}>
+                    <FormStyle onSubmit={handleSubmit}>
 
                         <InputStyle
-                            type="text"
-                            value={username}
                             placeholder='Nome'
-                            onChange={(e) => setUsername(e.target.value)}
+                            type="text"
+                            name='username'
+                            value={form.username}
+                            onChange={onChangeForm}
                         />
 
                         <InputStyle
                             placeholder='E-mail'
+                            name='email'
                             type="email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)} />
+                            value={form.email}
+                            onChange={onChangeForm} />
 
                         <InputStyle
                             placeholder='Senha'
+                            name='password'
                             type="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)} />
+                            value={form.password}
+                            onChange={onChangeForm} />
                         <ButtonStyle type="submit">Entrar</ButtonStyle>
                     </FormStyle>
 

@@ -1,12 +1,10 @@
-
 import Card from "../../componentes/Card/Card";
 import HeaderPerfil from "../../componentes/Header/HeaderPerfil";
+import Historicos from "../../componentes/Historicos/Historicos";
 import Menu from "../../componentes/Menu/Menu";
 import { ContainerHome, SectionStyle } from "./style";
 
-
-
-function Home({news, setNews, postFeed, setPostFeed}) {
+function Home({ news, setNews }) {
 
     return (
         <>
@@ -14,19 +12,19 @@ function Home({news, setNews, postFeed, setPostFeed}) {
                 news={news}
                 titulo={'Questions'}
             />
-            
+
             <SectionStyle>
                 <Menu />
 
                 <ContainerHome>
-                {/* <Filtros/> */}
 
-                <Card            
-                />
+                    <Card />
 
                 </ContainerHome>
 
             </SectionStyle>
+
+            <Historicos/>
         </>
     )
 }

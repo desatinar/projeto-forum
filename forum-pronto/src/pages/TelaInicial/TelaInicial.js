@@ -6,11 +6,11 @@ import Historicos from "../../componentes/Historicos/Historicos"
 
 const TelaInicial = ({novo, setNovo}) =>{
     
-
+    
     const pegarTodosPosts =()=>{
-                axios.get('http://localhost:3003/post/all')
+                axios.get('https://forum-backend-3zv0.onrender.com/post/all')
                 .then(response =>{
-                    // console.log('esse aqui',response.data)
+       
                     setNovo(response.data)
                 })
                 .catch(error => console.log(error))
@@ -27,6 +27,9 @@ const TelaInicial = ({novo, setNovo}) =>{
                     return(
                         <div key={index}>
                             <p>{item.creator_username}</p>
+                            {item.comments.map(coment =>{
+                                return(coment.comment)
+                            })}
                         </div>
                     )
                 })}

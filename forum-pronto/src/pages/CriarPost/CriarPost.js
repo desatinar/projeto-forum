@@ -28,7 +28,7 @@ const CriarPost = () => {
             data.image = image;
         }
 
-    axios.post('http://localhost:3003/post/create',data,{
+    axios.post('https://forum-backend-3zv0.onrender.com/post/create',data,{
         headers:{'Authorization': token}})
         .then(response =>{
             // pegarPostApi()

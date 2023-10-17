@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from "../../componentes/Header/Header"
@@ -15,7 +17,7 @@ function Login() {
     useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
-            navigate('home');
+            navigate('/home');
         }
     }, [navigate]);
 
@@ -25,12 +27,12 @@ function Login() {
 
         const credentials = { username, password };
 
-        axios.post('http://localhost:3003/user/login', credentials)
+        axios.post('https://forum-backend-3zv0.onrender.com/user/login', credentials)
             .then(response => {
                 localStorage.setItem('token', response.data.token);
                 alert(response.data.message);
                 console.log(response.message)
-                navigate('home');
+                navigate('/home');
             })
             .catch(error => console.log(error));
     };
@@ -75,4 +77,8 @@ function Login() {
 }
 
 export default Login
+
+
+
+
 

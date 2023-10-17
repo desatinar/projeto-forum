@@ -5,22 +5,16 @@ import Home from "../pages/Home/Home"
 import CriarPost from "../pages/CriarPost/CriarPost"
 import EditarPerfil from "../pages/EditarPerfil/EditarPerfil"
 import Comentar from "../componentes/Comentar/Comentar"
+import TelaInicial from "../pages/TelaInicial/TelaInicial"
 
 
-
-
-function Rotas(props) {
+function Rotas({setNovo, novo}) {
     return (
         <BrowserRouter>
             <Routes>
-                
-                <Route index element={<Login />} />
-                <Route path="home" element={<Home 
-                news={props.news} 
-                setNews={props.setNews}
-                postFeed={props.postFeed}
-                setPostFeed={props.setPostFeed}
-                />} />
+                <Route index element={<TelaInicial setNovo={setNovo} novo={novo}  />} />
+                <Route path="home" element={<Home/>} />
+                <Route path="login" element={<Login/>} />
                 <Route path="cadastrar" element={<Create/>}/>
                 <Route path="criarPost" element={<CriarPost/>} />
                 <Route path="editarPefil" element={<EditarPerfil/>}/>
