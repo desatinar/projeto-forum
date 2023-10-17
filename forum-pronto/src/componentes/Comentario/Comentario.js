@@ -7,11 +7,9 @@ import GetComentario from '../getComentario/getComentario';
 
 function Comentario({ postId }) {
 
-  const [mensagem, setMensagem] = useState([])
+  const [mensagem, setMensagem] = useState('')
   const [comentar, setComentario] = useState(false)
   const [comentarios, setComentarios] = useState([]);
-
-  console.log(mensagem)
 
   const token = localStorage.getItem('token');
 
@@ -24,15 +22,15 @@ function Comentario({ postId }) {
 
 
     // Realize a solicitação POST para adicionar o comentário
-    axios.post('https://forum-backend-3zv0.onrender.com/comment/create', commentData, {
+    axios.post('http://localhost:3003/comment/create', commentData, {
       headers: {
         Authorization: token,
       },
     })
       .then((response) => {
 
-        // setComentarios(response.data);
-        console.log('comentario',response.data)
+        console.log('Comentário enviado com sucesso:', response.data);
+
 
       })
       .catch((err) => console.error(err.response.data.message));
@@ -61,10 +59,6 @@ function Comentario({ postId }) {
       onClick={() => setComentario(!comentar)}>
         Comentar
       </button>
-      
-          {mensagem}
-
-     
 <GetComentario postId={postId}/>
       <div>
 

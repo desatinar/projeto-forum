@@ -10,7 +10,7 @@ function Header() {
             <img src={logo} alt='logo alem help' />
             <div>
                 <ButtonRegister onClick={()=>{navigate('/cadastrar')}}>Cadastro</ButtonRegister>
-                <ButtonLogin onClick={()=>{navigate('/login')}}>Login</ButtonLogin>
+                <ButtonLogin onClick={()=>{navigate('/')}}>Login</ButtonLogin>
             </div>
         </HeaderStyle>
     )
